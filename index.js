@@ -118,6 +118,7 @@ app.post("/users/login",(req,res)=>{
 
     con.query("SELECT * FROM usuario WHERE nomeusuario=?",[req.body.nomeusuario],(error,result)=>{
         if(!error){
+            if(!result || result==  "" ||result==null) return res.status(400).send({output:`Usuário ou senha incorretos`})
             bcrypt.compare(req.body.senha , result[0].senha,(err, igual)=>{
                 if(igual){
                     const token = criarToken(result[0].idusuario, result[0].nomeusuario,result[0].email);
